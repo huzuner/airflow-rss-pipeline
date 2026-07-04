@@ -48,7 +48,7 @@ RSS Feeds  --->  fetch()  --->  analyze()  --->  load()  --->  Postgres
    docker compose up
    ```
 
-3. Open the Airflow UI at [http://localhost:8080](http://localhost:8080)
+3. Open the Airflow UI at [http://localhost:8081](http://localhost:8081)
    (user: `airflow`, password: `airflow`) and unpause the
    `news_sentiment_pipeline` DAG, or trigger it manually.
 
