@@ -1,0 +1,14 @@
+with staged as (
+
+    select * from {{ ref('stg_news_sentiment') }}
+
+)
+
+select
+    fetched_date,
+    news_source,
+    sentiment_label,
+    count(*) as article_count
+from staged
+group by 1, 2, 3
+order by 1, 2, 3

@@ -1,0 +1,12 @@
+news_sentiment:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('SENTIMENT_DB_HOST', 'sentiment-postgres') }}"
+      port: "{{ env_var('SENTIMENT_DB_PORT', '5432') | as_number }}"
+      user: "{{ env_var('SENTIMENT_DB_USER', 'sentiment') }}"
+      password: "{{ env_var('SENTIMENT_DB_PASSWORD', 'sentiment') }}"
+      dbname: "{{ env_var('SENTIMENT_DB_NAME', 'sentiment_data') }}"
+      schema: public
+      threads: 2

@@ -14,6 +14,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 
 from airflow.decorators import dag, task
+from airflow.operators.bash import BashOperator
 
 # Make our scripts/ folder importable inside the Airflow containers
 import sys
@@ -58,7 +59,23 @@ def news_sentiment_pipeline():
     # is passed as the next function's input (TaskFlow wires the XComs for you)
     raw_articles = fetch()
     scored_articles = analyze(raw_articles)
-    load(scored_articles)
+    rows_loaded = load(scored_articles)
+
+    transform = BashOperator(
+        task_id="transform",
+        bash_command="""
+            set -euo pipefail
+
+            cd /opt/airflow/dbt
+
+            dbt deps
+            dbt run \
+                --profiles-dir . \
+                --project-dir .
+        """,
+    )
+
+    rows_loaded >> transform
 
 
 news_sentiment_pipeline()
